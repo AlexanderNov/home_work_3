@@ -25,11 +25,11 @@ def folder_to_zip(source_folder, destination_folder=os.getcwd()):
     print(f"Количество заархивированных файлов: {files_count}")
 
 
-def get_size(path):
+def get_size(source_folder):
     total_size = 0
-    for dirpath, dirnames, filenames in os.walk(path):
-        for f in filenames:
-            fp = os.path.join(dirpath, f)
+    for folder, subfolders, files in os.walk(source_folder):
+        for file in files:
+            fp = os.path.join(folder, file)
             if not os.path.islink(fp):
                 total_size += os.path.getsize(fp)
 
@@ -38,17 +38,20 @@ def get_size(path):
 
 def human_readable_size(size_bytes):
     """
-    Преобразует размер файла в KB, MB, GB в зависимости от размера
+    Преобразует переданное значение в B, KB, MB, GB, TB в зависимости от размера
     """
     if size_bytes == 0:
         return "0B"
     size_name = ("B", "KB", "MB", "GB", "TB")
-    i = int(size_bytes / 1024)
-    power = 0
+    i = int(size_bytes)
+    grade = 0
     while i >= 1000:
         i /= 1024
-        power += 1
-    return f"{i:.2f}{size_name[power]}"
+        grade += 1
+    if grade > 0:
+        return f"{i:.2f}{size_name[grade]}"
+    else:
+        return f"{i:.0f}{size_name[grade]}"
 
 
 def analyze_path(path="."):
