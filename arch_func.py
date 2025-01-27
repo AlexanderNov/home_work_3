@@ -1,15 +1,14 @@
 import os
 import zipfile
 from datetime import datetime
-from logging import raiseExceptions
 
 
-def folder_to_zip(source_folder, destination_folder=os.getcwd()):
+def folder_to_zip(source_folder, destination_folder):
     files_count = 0
     if destination_folder is None:
         destination_folder = os.getcwd() + "\\"
     elif not destination_folder.endswith("\\"):
-        destination_folder = destination_folder + "\\"
+        destination_folder += "\\"
     if not os.path.exists(destination_folder):
         print("Укажите корректный путь к папке в которую хотите положить архив")
         exit(1)
