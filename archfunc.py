@@ -4,7 +4,6 @@ from datetime import datetime
 
 
 def folder_to_zip(source_folder, destination_folder):
-    files_count = 0
     if destination_folder is None:
         destination_folder = os.getcwd() + "\\"
     elif not destination_folder.endswith("\\"):
@@ -13,7 +12,10 @@ def folder_to_zip(source_folder, destination_folder):
         print("Укажите корректный путь к папке в которую хотите положить архив")
         exit(1)
 
-    zip_me = zipfile.ZipFile(destination_folder + datetime.now().strftime('%Y-%m-%d-%H-%M') + '.zip', 'w')
+    destination_path = destination_folder + datetime.now().strftime('%Y-%m-%d-%H-%M') + '.zip'
+    zip_me = zipfile.ZipFile(destination_path, 'w')
+
+    files_count = 0
     for folder, subfolders, files in os.walk(source_folder):
         for file in files:
             zip_me.write(os.path.join(folder, file), os.path.relpath(os.path.join(folder, file), source_folder),
@@ -22,6 +24,7 @@ def folder_to_zip(source_folder, destination_folder):
     zip_me.close()
 
     print(f"Количество заархивированных файлов: {files_count}")
+    print(f"Файл архива: {destination_path}")
 
 
 def get_size(source_folder):

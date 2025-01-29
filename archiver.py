@@ -1,6 +1,6 @@
 import os
 import argparse
-import arch_func
+import archfunc
 
 if __name__ == "__main__":
 
@@ -18,12 +18,12 @@ if __name__ == "__main__":
         if not os.path.isdir(str(args.sf)):
             print("Укажите корректный путь к папке, которую хотите архивировать")
             exit(1)
-        arch_func.folder_to_zip(args.sf, args.df)
+        archfunc.folder_to_zip(args.sf, args.df)
     elif args.operation == 'analyse':
         if not os.path.isdir(str(args.sf)):
             print("Укажите корректный путь к папке, которую хотите анализировать")
             exit(1)
-        arch_func.analyze_path(args.sf)
+        archfunc.analyze_path(args.sf)
     else:
         print("Укажите корректную команду")
         exit(1)
