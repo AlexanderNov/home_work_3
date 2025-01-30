@@ -4,6 +4,9 @@ from datetime import datetime
 
 
 def folder_to_zip(source_folder, destination_folder):
+    """
+    Архивирует папку source_folder в папку destination_folder
+    """
     if destination_folder is None:
         destination_folder = os.getcwd() + "\\"
     elif not destination_folder.endswith("\\"):
@@ -28,6 +31,9 @@ def folder_to_zip(source_folder, destination_folder):
 
 
 def get_size(source_folder):
+    """
+    Высчитывает размер указанной папки
+    """
     total_size = 0
     for folder, subfolders, files in os.walk(source_folder):
         for file in files:
@@ -56,10 +62,13 @@ def human_readable_size(size_bytes):
         return f"{i:.0f}{size_name[grade]}"
 
 
-def analyze_path(path="."):
-    print("full size:", human_readable_size(get_size(path)))
-    for item in sorted(os.listdir(path)):
-        item_path = os.path.join(path, item)
+def analyse_path(source_folder):
+    """
+    Выводит список папок и файлов с соответствующими размерами
+    """
+    print("full size:", human_readable_size(get_size(source_folder)))
+    for item in sorted(os.listdir(source_folder)):
+        item_path = os.path.join(source_folder, item)
         if os.path.isdir(item_path):
             print(f"- {item}: {human_readable_size(get_size(item_path))}")
         else:

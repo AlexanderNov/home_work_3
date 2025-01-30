@@ -23,7 +23,7 @@ if __name__ == "__main__":
         if not os.path.isdir(str(args.sf)):
             print("Укажите корректный путь к папке, которую хотите анализировать")
             exit(1)
-        archfunc.analyze_path(args.sf)
+        archfunc.analyse_path(args.sf)
     else:
         print("Укажите корректную команду")
         exit(1)
