@@ -4,9 +4,8 @@ import archfunc
 
 if __name__ == "__main__":
 
-    # продумать текст
-    # написать в хелпе пример использования
-    parser = argparse.ArgumentParser(description='Утилита для архивирования и анализа файлов и папок')
+    parser = argparse.ArgumentParser(description='Утилита для архивирования и анализа файлов и папок.',
+                                     usage='archiver.py <operation> --sf <source folder> --df <(optional)destination folder>')
     parser.add_argument('operation', help='archive для архивации папки, analyse для анализа папки')
     parser.add_argument('--sf', help='source folder путь к папке, которую хотите архивировать или анализировать')
     parser.add_argument('--df',

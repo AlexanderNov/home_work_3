@@ -5,7 +5,7 @@ from datetime import datetime
 
 def folder_to_zip(source_folder, destination_folder):
     """
-    Архивирует папку source_folder в папку destination_folder
+    Архивирует папку source_folder в папку destination_folder, выводит количество заархивированных файлов, выводит путь к получившемуся zip файлу
     """
     if destination_folder is None:
         destination_folder = os.getcwd() + "\\"

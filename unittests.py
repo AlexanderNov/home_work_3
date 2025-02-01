@@ -1,10 +1,12 @@
 import unittest
 import os
 import zipfile
+import io
 from archfunc import folder_to_zip, get_size, human_readable_size, analyse_path
+from unittest.mock import patch
 
 
-class TestFolderToZip(unittest.TestCase):
+class TestArchiveAndAnalyse(unittest.TestCase):
     def setUp(self):
         """Подготовка тестовой папки с файлами"""
         self.test_folder = "test_folder"
@@ -29,11 +31,11 @@ class TestFolderToZip(unittest.TestCase):
         destination_folder = "."
         folder_to_zip(self.test_folder, destination_folder)
 
-        # Проверяем, что архив создан
+        # Проверяем, что архив создан и файл не нулевой
         zip_files = [f for f in os.listdir(destination_folder) if f.endswith('.zip')]
         self.assertTrue(len(zip_files) > 0)
 
-        # Проверяем содержимое архива
+        # Проверяем, что содержимое архива соответствует папке, которую архивировали
         with zipfile.ZipFile(zip_files[0], 'r') as zip_ref:
             zip_ref.extractall("extracted")
             self.assertTrue(os.path.exists("extracted/file1.txt"))
@@ -49,6 +51,25 @@ class TestFolderToZip(unittest.TestCase):
         """Тестирование подсчета размера папки"""
         size = get_size(self.test_folder)
         self.assertEqual(size, 22)  # 11 байт на каждый файл
+
+    def test_analyse_path(self):
+        # Ожидаемый вывод функции analyse_path
+        expected_output = [
+            f"full size: {human_readable_size(get_size(self.test_folder))}",
+            f"- file1.txt: {human_readable_size(os.path.getsize(os.path.join(self.test_folder, 'file1.txt')))}",
+            f"- file2.txt: {human_readable_size(os.path.getsize(os.path.join(self.test_folder, 'file2.txt')))}",
+        ]
+
+        # Захватываем вывод функции analyse_path
+        with patch("sys.stdout", new_callable=io.StringIO) as mock_stdout:
+            analyse_path(self.test_folder)
+            # Получаем вывод
+            captured_output = mock_stdout.getvalue().strip().split("\n")
+
+        # Проверяем, что вывод соответствует ожидаемому
+        self.assertEqual(len(captured_output), len(expected_output))
+        for expected, actual in zip(expected_output, captured_output):
+            self.assertIn(expected, actual)
 
 
 class TestHumanReadableSize(unittest.TestCase):
