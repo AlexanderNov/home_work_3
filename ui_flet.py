@@ -13,13 +13,29 @@ def main(page: ft.Page):
         selected_destination_folder.update()
 
     def btn_clicked_analyse(e):
-        analyse_path(selected_source_folder.value)
+        if not os.path.exists(str(selected_source_folder.value)):
+            results.value = "Укажите корректный путь к папке, которую хотите анализировать"
+            results.update()
+            raise ValueError("Укажите корректный путь к папке, которую хотите анализировать")
+
+        analyse_results = analyse_path(selected_source_folder.value)
+        results.value = "Результат работы:"
+        results.update()
+
+        for item in analyse_results:
+            lv.controls.append(ft.Text(f"{item}"))
+        page.add(lv)
 
     def btn_clicked_arch(e):
+        if not os.path.exists(str(selected_source_folder.value)):
+            raise ValueError("Укажите корректный путь к папке, которую хотите архивировать")
         folder_to_zip(selected_source_folder.value, selected_destination_folder.value)
+
+    page.title = "Программа архивации и анализа папок"
 
     pick_source_folder_dialog = ft.FilePicker(on_result=pick_source_folder_result)
     selected_source_folder = ft.Text()
+
     page.overlay.append(pick_source_folder_dialog)
     page.add(
         ft.Row(
@@ -38,6 +54,8 @@ def main(page: ft.Page):
 
     pick_destination_folder_dialog = ft.FilePicker(on_result=pick_destination_folder_result)
     selected_destination_folder = ft.Text()
+    selected_destination_folder.value = os.getcwd()
+
     page.overlay.append(pick_destination_folder_dialog)
     page.add(
         ft.Row(
@@ -55,9 +73,13 @@ def main(page: ft.Page):
     )
 
     btn_arch = ft.ElevatedButton(text="Архивировать", on_click=btn_clicked_arch)
-    page.add(btn_arch)
     btn_analyse = ft.ElevatedButton(text="Анализировать", on_click=btn_clicked_analyse)
-    page.add(btn_analyse)
+    page.add(ft.Row([btn_arch, btn_analyse]))
+
+    lv = ft.ListView(expand=False, spacing=10)
+
+    results = ft.Text("Результат работы:")
+    page.add(results)
 
     page.update()
 

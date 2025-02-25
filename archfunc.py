@@ -66,10 +66,17 @@ def analyse_path(source_folder):
     """
     Выводит список папок и файлов с соответствующими размерами
     """
+    ui_analyse_result = []
+
     print("full size:", human_readable_size(get_size(source_folder)))
+    ui_analyse_result.append("full size: " + human_readable_size(get_size(source_folder)))
+
     for item in sorted(os.listdir(source_folder)):
         item_path = os.path.join(source_folder, item)
         if os.path.isdir(item_path):
             print(f"- {item}: {human_readable_size(get_size(item_path))}")
+            ui_analyse_result.append("- " + item + ": " + human_readable_size(get_size(item_path)))
         else:
             print(f"- {item}: {human_readable_size(os.path.getsize(item_path))}")
+            ui_analyse_result.append("- " + item + ": " + human_readable_size(os.path.getsize(item_path)))
+    return ui_analyse_result
