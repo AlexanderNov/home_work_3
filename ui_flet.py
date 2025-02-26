@@ -13,6 +13,8 @@ def main(page: ft.Page):
         selected_destination_folder.update()
 
     def btn_clicked_analyse(e):
+        lv.controls.clear()
+
         if not os.path.exists(str(selected_source_folder.value)):
             results.value = "Укажите корректный путь к папке, которую хотите анализировать"
             results.update()
@@ -24,12 +26,27 @@ def main(page: ft.Page):
 
         for item in analyse_results:
             lv.controls.append(ft.Text(f"{item}"))
-        page.add(lv)
+
+        lv.update()
 
     def btn_clicked_arch(e):
+        lv.controls.clear()
+
         if not os.path.exists(str(selected_source_folder.value)):
+            results.value = "Укажите корректный путь к папке, которую хотите архивировать"
+            results.update()
             raise ValueError("Укажите корректный путь к папке, которую хотите архивировать")
+
         folder_to_zip(selected_source_folder.value, selected_destination_folder.value)
+
+        archive_results = folder_to_zip(selected_source_folder.value, selected_destination_folder.value)
+        results.value = "Результат работы:"
+        results.update()
+
+        for item in archive_results:
+            lv.controls.append(ft.Text(f"{item}"))
+
+        lv.update()
 
     page.title = "Программа архивации и анализа папок"
 
@@ -76,10 +93,11 @@ def main(page: ft.Page):
     btn_analyse = ft.ElevatedButton(text="Анализировать", on_click=btn_clicked_analyse)
     page.add(ft.Row([btn_arch, btn_analyse]))
 
-    lv = ft.ListView(expand=False, spacing=10)
-
     results = ft.Text("Результат работы:")
     page.add(results)
+
+    lv = ft.ListView(expand=False, spacing=10)
+    page.add(lv)
 
     page.update()
 

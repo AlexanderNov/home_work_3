@@ -7,6 +7,8 @@ def folder_to_zip(source_folder, destination_folder):
     """
     Архивирует папку source_folder в папку destination_folder, выводит количество заархивированных файлов, выводит путь к получившемуся zip файлу
     """
+    ui_archive_result = []
+
     if destination_folder is None:
         destination_folder = os.getcwd() + "\\"
     elif not destination_folder.endswith("\\"):
@@ -28,6 +30,10 @@ def folder_to_zip(source_folder, destination_folder):
 
     print(f"Количество заархивированных файлов: {files_count}")
     print(f"Файл архива: {destination_path}")
+    ui_archive_result.append("Количество заархивированных файлов: " + str(files_count))
+    ui_archive_result.append("Файл архива: " + destination_path)
+
+    return ui_archive_result
 
 
 def get_size(source_folder):
