@@ -26,7 +26,6 @@ def main(page: ft.Page):
 
         for item in analyse_results:
             lv.controls.append(ft.Text(f"{item}"))
-
         lv.update()
 
     def btn_clicked_arch(e):
@@ -37,15 +36,12 @@ def main(page: ft.Page):
             results.update()
             raise ValueError("Укажите корректный путь к папке, которую хотите архивировать")
 
-        folder_to_zip(selected_source_folder.value, selected_destination_folder.value)
-
         archive_results = folder_to_zip(selected_source_folder.value, selected_destination_folder.value)
         results.value = "Результат работы:"
         results.update()
 
         for item in archive_results:
             lv.controls.append(ft.Text(f"{item}"))
-
         lv.update()
 
     page.title = "Программа архивации и анализа папок"
